@@ -26,17 +26,17 @@ function API(props) {
         }              
     }
 
+    console.log(process.env.NODE_ENV)
+
     const characterDetails = (data || []).map((element)=>                       
-            <Col className="text-light mb-2 text-dark" key={element.id} xs={12} sm={6} md={4} lg={3}>                
+            <Col className="text-light mb-2 text-dark" key={element.id} xs={12} sm={6} md={4} lg={3}>
+                <div className="image-container"><img src={element.image} alt={element.name} /></div>              
                 <div className="h6">{element.name}</div>
                 <div className="h6">{element.gender}</div> 
                 <div className="h6">{element.birth_year}</div>
                 <div className="h6">{faction(element.faction)}</div>                                              
             </Col>
-        )
-    
-
-    
+        )   
 
     return (
         
