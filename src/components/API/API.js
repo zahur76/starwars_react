@@ -16,15 +16,27 @@ function API(props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    console.log(data)
+
+    const faction = (faction) => {
+        console.log(faction)
+        if(faction===1){
+            return 'Rebel Alliance'
+        }else{
+            return 'Galactic Empire'
+        }              
+    }
+
     const characterDetails = (data || []).map((element)=>                       
-            <Col className="text-light mb-2" key={element.id} xs={12} sm={6} md={4} lg={3}>                
-                <div className="h4 text-info">{element.name}</div>
-                <div className="h4 text-info">{element.gender}</div> 
-                <div className="h4 text-info">{element.birth_year}</div>
-                <div className="h4 text-info">{element.faction}</div>                                              
+            <Col className="text-light mb-2 text-dark" key={element.id} xs={12} sm={6} md={4} lg={3}>                
+                <div className="h6">{element.name}</div>
+                <div className="h6">{element.gender}</div> 
+                <div className="h6">{element.birth_year}</div>
+                <div className="h6">{faction(element.faction)}</div>                                              
             </Col>
         )
+    
+
+    
 
     return (
         
