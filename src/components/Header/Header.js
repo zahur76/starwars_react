@@ -52,7 +52,7 @@ function Header(props) {
                 </Col>
             </Row>
 
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose} className='login-modal'>
                 <Modal.Header className='border-0' closeButton>
                     <Modal.Title>Sign In</Modal.Title>
                 </Modal.Header>

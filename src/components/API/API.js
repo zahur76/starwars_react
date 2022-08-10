@@ -7,9 +7,12 @@ import Col from 'react-bootstrap/Col'
 function API(props) {
     
     const [data, setData] = useState(null);
+    console.log(process.env.NODE_ENV)
+    const [url, setUrl] = useState(process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8000/api/all_characters' : 'https://starwarsapi.hansolo.digital/api/all_characters')
+    // https://starwarsapi.hansolo.digital/api/all_characters
 
     useEffect(() => {
-        fetch("https://starwarsapi.hansolo.digital/api/all_characters").then((res) => res.json())
+        fetch(url).then((res) => res.json())
         .then((data) => [setData(data), console.log(data)]).catch((error) => {
             console.log(error);
         });
@@ -18,7 +21,6 @@ function API(props) {
 
 
     const faction = (faction) => {
-        console.log(faction)
         if(faction===1){
             return 'Rebel Alliance'
         }else{
@@ -26,7 +28,7 @@ function API(props) {
         }              
     }
 
-    console.log(process.env.NODE_ENV)
+    
 
     const characterDetails = (data || []).map((element)=>                       
             <Col className="text-light mb-2 text-dark" key={element.id} xs={12} sm={6} md={4} lg={3}>
