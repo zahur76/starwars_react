@@ -21,6 +21,27 @@ function Header(props) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const [username, setUsername] = useState(null);
+    const [password, setPassword] = useState(null);
+
+
+    // handle login form
+    const handleUsernameChange = (event) => {
+        setUsername(event.target.value)
+        console.log(username)
+    }
+
+    const handlePasswordChange = (event) => {
+        setPassword(event.target.value)
+        console.log(password)
+    }
+
+    const handleLoginSubmit = (e) => {
+        e.preventDefault()
+        let data = {'username': username, 'password': password}
+        console.log(data)
+    }
+
 
     return (
         <div>
@@ -36,22 +57,22 @@ function Header(props) {
                     <Modal.Title>Sign In</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <Form>                    
+                <Form onSubmit={handleLoginSubmit}>                    
                     <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faUser} /></InputGroup.Text>
                     <Form.Control
                     placeholder="Username or Email"
                     aria-label="Username"
-                    aria-describedby="basic-addon1" required/>
+                    username={username} onChange={handleUsernameChange} aria-describedby="basic-addon1" required/>
                     </InputGroup>                    
                     <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faKey} /></InputGroup.Text>
                     <Form.Control
                     placeholder="Password"
                     aria-label="Username"
-                    aria-describedby="basic-addon1" required/>
+                    password={password} onChange={handlePasswordChange} aria-describedby="basic-addon1" required/>
                     </InputGroup>
-                    <Button variant="dark" className="btn-sm" ype="submit">
+                    <Button variant="dark" className="btn-sm" type="submit">
                         Submit
                     </Button>
                 </Form>
