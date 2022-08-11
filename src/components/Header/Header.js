@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faKey, faWindowRestore } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faKey } from '@fortawesome/free-solid-svg-icons'
 
 import { useEffect, useState } from "react"
 // import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
@@ -25,6 +25,16 @@ function Header(props) {
    
 
     // login status
+    // useEffect(() => {
+    //     let data = {'username': username, 'password': password}
+    //     console.log(data)
+    //     fetch('http://127.0.0.1:8000/dj-rest-auth/user/', {method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(data)}).then((res) => res.json())
+    //     .then((data) => [console.log(data)]).catch((error) => {
+    //         // console.log(localStorage.getItem("login"));
+    //     });
+    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [])
+
     const [accessToken, setAccessToken] = useState(null);
 
     // handle login form
@@ -34,9 +44,10 @@ function Header(props) {
 
     const handlePasswordChange = (event) => {
         setPassword(event.target.value)
-    }
+    }    
 
     //handle login
+
     const handleLoginSubmit = (e) => {
         e.preventDefault()
         let data = {'username': username, 'password': password}
@@ -61,13 +72,17 @@ function Header(props) {
         });
     }
 
+    // handle logout
     const handleLogout = (e) => {
         e.preventDefault()
-        localStorage.removeItem('login');
-        setLogin(null)
-        window.dispatchEvent(new Event("storage"));
+        fetch('http://127.0.0.1:8000/dj-rest-auth/logout/', {method: 'POST', headers: {
+            Authorization: accessToken
+          }}).then((res) => [res.status===200 ? [localStorage.removeItem('login'), setLogin(null), window.dispatchEvent(new Event("storage"))] : console.log('poo')]
+            ).catch((error) => {
+            // console.log(localStorage.getItem("login"));
+        }, [])
     }
-    return (
+    return (        
         <div>
             <Row className='m-0 bg-dark '>
                 <Col className='h1 text-start text-warning' xs={8}>StarWars API</Col>
