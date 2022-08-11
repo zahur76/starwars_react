@@ -5,33 +5,45 @@ import Col from 'react-bootstrap/Col'
 
 
 function API(props) {
-    
     const [data, setData] = useState(null);
-    console.log(process.env.NODE_ENV)
+    const [masterData, setMasterData] = useState(null);
+    // console.log(process.env.NODE_ENV)
+    const [login, setLogin] = useState(localStorage.getItem("login")); 
+    // const [lang, setLang] = useState(null);
 
     const debug = 'development'
-    const [url, setUrl] = useState(debug === 'development' ? 'http://127.0.0.1:8000/api/all_characters' : 'https://starwarsapi.hansolo.digital/api/all_characters')
+    const [url] = useState(debug === 'development' ? 'http://127.0.0.1:8000/api/all_characters' : 'https://starwarsapi.hansolo.digital/api/all_characters')
     // https://starwarsapi.hansolo.digital/api/all_characters
 
     useEffect(() => {
         fetch(url).then((res) => res.json())
-        .then((data) => [setData(data), console.log(data)]).catch((error) => {
-            console.log(error);
+        .then((data) => [setData(data.slice(0,4)), setMasterData(data)]).catch((error) => {
+            console.log(localStorage.getItem("login"));
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    //detect change login status to update view
+    useEffect(() => {
+        window.addEventListener('storage', () => {
+            setLogin(localStorage.getItem('login'))
+            if(!login){
+                setData(masterData)
+            }else{
+                setData(masterData.slice(0,4))
+            }                    
+        })
+        }, [data, login, masterData, url])
 
+    // add faction to description
     const faction = (faction) => {
         if(faction===1){
             return 'Rebel Alliance'
         }else{
             return 'Galactic Empire'
         }              
-    }
-
+    }    
     
-
     const characterDetails = (data || []).map((element)=>                       
             <Col className="text-light mb-2 text-dark" key={element.id} xs={12} sm={6} md={4} lg={3}>
                 <div className="image-container"><img src={element.image} alt={element.name} /></div>              
@@ -41,9 +53,7 @@ function API(props) {
                 <div className="h6">{faction(element.faction)}</div>                                              
             </Col>
         )   
-
-    return (
-        
+    return (        
         <div>
             <div className='text-center'>API REQUESTS</div>
             <Row className='m-0 text-center mt-4'>

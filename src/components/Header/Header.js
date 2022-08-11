@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faKey } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faKey, faWindowRestore } from '@fortawesome/free-solid-svg-icons'
 
 import { useEffect, useState } from "react"
 // import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
@@ -21,7 +21,7 @@ function Header(props) {
 
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
-    const [login, setLogin] = useState(false);
+    const [login, setLogin] = useState(localStorage.getItem("login") ? true : false);
    
 
     // login status
@@ -49,10 +49,11 @@ function Header(props) {
                 const error = (data && data.message) || response.statusText;
                 return Promise.reject(error);
             }
-        setAccessToken(data['access_token'])
-        localStorage.setItem("login", true)
-        setLogin(true)
+        setAccessToken(data['access_token'])        
+        setLogin(true) // update state to change element
+        localStorage.setItem("login", 'true')
         setShow(false)
+        window.dispatchEvent(new Event("storage"));
         })
         .catch(error => {
             console.error('There was an error!', error);
@@ -62,16 +63,16 @@ function Header(props) {
 
     const handleLogout = (e) => {
         e.preventDefault()
-        localStorage.setItem("login", false)
-        setLogin(false)
+        localStorage.removeItem('login');
+        setLogin(null)
+        window.dispatchEvent(new Event("storage"));
     }
-
     return (
         <div>
             <Row className='m-0 bg-dark '>
                 <Col className='h1 text-start text-warning' xs={8}>StarWars API</Col>
                 <Col className='h6 text-end text-warning my-auto btn' xs={4} >
-                {login===true ? <div onClick={handleLogout}>Logout</div> : <div onClick={handleShow}>Login</div>}
+                {login ? <div onClick={handleLogout}>Logout</div> : <div onClick={handleShow}>Login</div>}
                 </Col>
             </Row>
             <Modal show={show} onHide={handleClose} className='login-modal'>
