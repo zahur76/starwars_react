@@ -60,7 +60,8 @@ function Header(props) {
                 const error = (data && data.message) || response.statusText;
                 return Promise.reject(error);
             }
-        setAccessToken(data['access_token'])        
+        setAccessToken(data['access_token'])
+        localStorage.setItem('token', data['access_token'])     
         setLogin(true) // update state to change element
         localStorage.setItem("login", 'true')
         setShow(false)
@@ -77,7 +78,7 @@ function Header(props) {
         e.preventDefault()
         fetch('http://127.0.0.1:8000/dj-rest-auth/logout/', {method: 'POST', headers: {
             Authorization: accessToken
-          }}).then((res) => [res.status===200 ? [localStorage.removeItem('login'), setLogin(null), window.dispatchEvent(new Event("storage"))] : console.log('poo')]
+          }}).then((res) => [res.status===200 ? [localStorage.removeItem('login'), localStorage.removeItem('token'), setLogin(null), window.dispatchEvent(new Event("storage"))] : console.log('poo')]
             ).catch((error) => {
             // console.log(localStorage.getItem("login"));
         }, [])

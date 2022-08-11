@@ -55,6 +55,7 @@ function API(props) {
         )   
     return (        
         <div>
+            {localStorage.getItem('token')}
             <div className='text-center'>API REQUESTS</div>
             <Row className='m-0 text-center mt-4'>
                 {characterDetails}             
