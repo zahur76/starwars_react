@@ -47,8 +47,9 @@ function API(props) {
     const handleCharacterDetails = (event) => {
         event.preventDefault()
         const characterId = event.currentTarget.id
+        const accessToken = localStorage.getItem('token')
         fetch(`http://127.0.0.1:8000/api/character_details/${characterId}`, {method: 'GET', headers: {
-            Authorization: localStorage.getItem('token')
+            Authorization: `Bearer ${accessToken}`
           }}).then((res) => res.json())
           .then((data) => console.log(data)).catch((error) => {
               console.log(error);
