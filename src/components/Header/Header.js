@@ -80,13 +80,13 @@ function Header(props) {
             Authorization: accessToken
           }}).then((res) => [res.status===200 ? [localStorage.removeItem('login'), localStorage.removeItem('token'), setLogin(null), window.dispatchEvent(new Event("storage"))] : console.log('poo')]
             ).catch((error) => {
-            // console.log(localStorage.getItem("login"));
+            console.log(error)
         }, [])
     }
     return (        
         <div>
             <Row className='m-0 bg-dark '>
-                <Col className='h1 text-start text-warning' xs={8}>StarWars API</Col>
+                <Col className='h1 text-start' xs={8}><a className="text-decoration-none text-warning" href="/">StarWars API</a></Col>
                 <Col className='h6 text-end text-warning my-auto btn' xs={4} >
                 {login ? <div onClick={handleLogout}>Logout</div> : <div onClick={handleShow}>Login</div>}
                 </Col>

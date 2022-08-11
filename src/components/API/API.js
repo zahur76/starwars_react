@@ -18,7 +18,7 @@ function API(props) {
     useEffect(() => {
         fetch(url).then((res) => res.json())
         .then((data) => [setData(data.slice(0,4)), setMasterData(data)]).catch((error) => {
-            console.log(localStorage.getItem("login"));
+            console.log(error)
         });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -42,10 +42,20 @@ function API(props) {
         }else{
             return 'Galactic Empire'
         }              
-    }    
+    } 
     
+    const handleCharacterDetails = (event) => {
+        event.preventDefault()
+        const characterId = event.currentTarget.id
+        fetch(`http://127.0.0.1:8000/api/character_details/${characterId}`, {method: 'GET', headers: {
+            Authorization: localStorage.getItem('token')
+          }}).then((res) => res.json())
+          .then((data) => console.log(data)).catch((error) => {
+              console.log(error);
+        }); 
+    }
     const characterDetails = (data || []).map((element)=>                       
-            <Col className="text-light mb-2 text-dark" key={element.id} xs={12} sm={6} md={4} lg={3}>
+            <Col className="text-light mb-2 text-dark btn" id={element.id} key={element.id} xs={12} sm={6} md={4} lg={3} onClick={handleCharacterDetails}>
                 <div className="image-container"><img src={element.image} alt={element.name} /></div>              
                 <div className="h6">{element.name}</div>
                 <div className="h6">{element.gender}</div> 
@@ -55,7 +65,6 @@ function API(props) {
         )   
     return (        
         <div>
-            {localStorage.getItem('token')}
             <div className='text-center'>API REQUESTS</div>
             <Row className='m-0 text-center mt-4'>
                 {characterDetails}             
