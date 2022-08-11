@@ -13,9 +13,7 @@ import { useEffect, useState } from "react"
 // import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
 
 
-
 function Header(props) {
-
     // modal open close
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -23,35 +21,58 @@ function Header(props) {
 
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
+    const [login, setLogin] = useState(false);
+   
 
+    // login status
+    const [accessToken, setAccessToken] = useState(null);
 
     // handle login form
     const handleUsernameChange = (event) => {
         setUsername(event.target.value)
-        console.log(username)
     }
 
     const handlePasswordChange = (event) => {
         setPassword(event.target.value)
-        console.log(password)
     }
 
+    //handle login
     const handleLoginSubmit = (e) => {
         e.preventDefault()
         let data = {'username': username, 'password': password}
-        console.log(data)
+        fetch('http://127.0.0.1:8000/dj-rest-auth/login/', {method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(data)}).then(async response => {
+            const data = await response.json();
+
+            // check for error response
+            if (!response.ok) {
+                // get error message from body or default to response statusText
+                const error = (data && data.message) || response.statusText;
+                return Promise.reject(error);
+            }
+        setAccessToken(data['access_token'])
+        localStorage.setItem("login", true)
+        setLogin(true)
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
+            console.log('Error login credentials')
+        });
     }
 
+    const handleLogout = (e) => {
+        e.preventDefault()
+        localStorage.setItem("login", false)
+        setLogin(false)
+    }
 
     return (
         <div>
             <Row className='m-0 bg-dark '>
                 <Col className='h1 text-start text-warning' xs={8}>StarWars API</Col>
-                <Col className='h6 text-end text-warning my-auto btn' xs={4} onClick={handleShow}>
-                        Login
+                <Col className='h6 text-end text-warning my-auto btn' xs={4} >
+                {login===true ? <div onClick={handleLogout}>Logout</div> : <div onClick={handleShow}>Login</div>}
                 </Col>
             </Row>
-
             <Modal show={show} onHide={handleClose} className='login-modal'>
                 <Modal.Header className='border-0' closeButton>
                     <Modal.Title>Sign In</Modal.Title>

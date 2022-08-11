@@ -8,7 +8,9 @@ function API(props) {
     
     const [data, setData] = useState(null);
     console.log(process.env.NODE_ENV)
-    const [url, setUrl] = useState(process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8000/api/all_characters' : 'https://starwarsapi.hansolo.digital/api/all_characters')
+
+    const debug = 'development'
+    const [url, setUrl] = useState(debug === 'development' ? 'http://127.0.0.1:8000/api/all_characters' : 'https://starwarsapi.hansolo.digital/api/all_characters')
     // https://starwarsapi.hansolo.digital/api/all_characters
 
     useEffect(() => {
