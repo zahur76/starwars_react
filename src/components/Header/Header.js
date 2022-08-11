@@ -52,6 +52,7 @@ function Header(props) {
         setAccessToken(data['access_token'])
         localStorage.setItem("login", true)
         setLogin(true)
+        setShow(false)
         })
         .catch(error => {
             console.error('There was an error!', error);
@@ -91,6 +92,7 @@ function Header(props) {
                     <Form.Control
                     placeholder="Password"
                     aria-label="Username"
+                    type="password"
                     password={password} onChange={handlePasswordChange} aria-describedby="basic-addon1" required/>
                     </InputGroup>
                     <Button variant="dark" className="btn-sm" type="submit">
