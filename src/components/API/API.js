@@ -18,7 +18,6 @@ function API(props) {
     const [style, flashStyle] = useState(null)
 
     const handleFlashMessages = (message, error) =>{
-        console.log(error)
         if(error){
             flashStyle('flash-messages text-danger')
             flashMessages(message)
@@ -82,11 +81,19 @@ function API(props) {
         event.preventDefault()
         const characterId = event.currentTarget.id
         const accessToken = localStorage.getItem('token')
-        fetch(`http://127.0.0.1:8000/api/character_details/${characterId}`, {method: 'GET', headers: {
-            Authorization: `Bearer ${accessToken}`
-          }}).then((res) => res.json())
-          .then((data) => [data.detail ? handleFlashMessages('Denied Please Login!', 'error'): console.log(data)]).catch((error) => {
-              console.log(error);
+        fetch(`http://127.0.0.1:8000/api/character_details/${characterId}`, {method: 'GET', headers: {Authorization: `Bearer ${accessToken}`
+          }}).then(async response => {
+            const data = await response.json();
+            // check for error response
+            if (!response.ok) {
+                // get error message from body or default to response statusText
+                handleFlashMessages('Denied! Please Login.', 'error') 
+            }else if(response.ok){
+                console.log(data)
+            }       
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
         }); 
     }
     const characterDetails = (data || []).map((element)=>                       
