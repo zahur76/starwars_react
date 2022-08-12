@@ -1,3 +1,15 @@
 .modal-content {
     background-color: rgb(80, 118, 255);
 }
+
+/* flash messages */
+
+.flash-messages {
+    position: absolute;
+    top: 50px;
+    right: 50px;
+    padding: 10px;
+    background-color:rgb(255, 255, 255);
+    border: 1px solid black;
+    color:rgb(0, 0, 0);
+}

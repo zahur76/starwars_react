@@ -15,11 +15,22 @@ function API(props) {
     const [url] = useState(debug === 'development' ? 'http://127.0.0.1:8000/api/all_characters' : 'https://starwarsapi.hansolo.digital/api/all_characters')
     // https://starwarsapi.hansolo.digital/api/all_characters
 
+
+    // render character depending on login status
     useEffect(() => {
-        fetch(url).then((res) => res.json())
-        .then((data) => [setData(data.slice(0,4)), setMasterData(data)]).catch((error) => {
-            console.log(error)
-        });
+        if(login){
+            fetch(url).then((res) => res.json())
+            .then((data) => [setData(data), setMasterData(data)]).catch((error) => {
+                console.log(error)
+            });
+
+        }else{
+            fetch(url).then((res) => res.json())
+            .then((data) => [setData(data.slice(0,4)), setMasterData(data)]).catch((error) => {
+                console.log(error)
+            });
+        }
+        
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -33,8 +44,8 @@ function API(props) {
                 setData(masterData.slice(0,4))
             }                    
         })
-        }, [data, login, masterData, url])
-
+        }, [data, login, masterData])
+            
     // add faction to description
     const faction = (faction) => {
         if(faction===1){
@@ -51,7 +62,7 @@ function API(props) {
         fetch(`http://127.0.0.1:8000/api/character_details/${characterId}`, {method: 'GET', headers: {
             Authorization: `Bearer ${accessToken}`
           }}).then((res) => res.json())
-          .then((data) => console.log(data)).catch((error) => {
+          .then((data) => [data.detail ? console.log(data.detail): console.log(data)]).catch((error) => {
               console.log(error);
         }); 
     }

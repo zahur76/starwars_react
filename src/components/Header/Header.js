@@ -14,6 +14,11 @@ import { useEffect, useState } from "react"
 
 
 function Header(props) {
+
+    // flash messages
+    const [flash, flashMessages] = useState(null)
+
+
     // modal open close
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -24,16 +29,13 @@ function Header(props) {
     const [login, setLogin] = useState(localStorage.getItem("login") ? true : false);
    
 
-    // login status
-    // useEffect(() => {
-    //     let data = {'username': username, 'password': password}
-    //     console.log(data)
-    //     fetch('http://127.0.0.1:8000/dj-rest-auth/user/', {method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(data)}).then((res) => res.json())
-    //     .then((data) => [console.log(data)]).catch((error) => {
-    //         // console.log(localStorage.getItem("login"));
-    //     });
-    // // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [])
+    //handle all flask messages login/logout
+    const handleFlashMessages = (message) =>{
+        flashMessages(message)
+        setTimeout(() => {
+            flashMessages(null)
+        }, 3000);
+    }
 
     const [accessToken, setAccessToken] = useState(null);
 
@@ -57,15 +59,19 @@ function Header(props) {
             // check for error response
             if (!response.ok) {
                 // get error message from body or default to response statusText
+                setShow(false)
+                handleFlashMessages('Incorrect Username/password!')                
                 const error = (data && data.message) || response.statusText;
                 return Promise.reject(error);
             }
+        
         setAccessToken(data['access_token'])
         localStorage.setItem('token', data['access_token'])     
         setLogin(true) // update state to change element
         localStorage.setItem("login", 'true')
         setShow(false)
         window.dispatchEvent(new Event("storage"));
+        handleFlashMessages('Login Successful!')
         })
         .catch(error => {
             console.error('There was an error!', error);
@@ -78,13 +84,14 @@ function Header(props) {
         e.preventDefault()
         fetch('http://127.0.0.1:8000/dj-rest-auth/logout/', {method: 'POST', headers: {
             Authorization: accessToken
-          }}).then((res) => [res.status===200 ? [localStorage.removeItem('login'), localStorage.removeItem('token'), setLogin(null), window.dispatchEvent(new Event("storage"))] : console.log('poo')]
+          }}).then((res) => [res.status===200 ? [handleFlashMessages('Logout Successful!'), localStorage.removeItem('login'), localStorage.removeItem('token'), setLogin(null), window.dispatchEvent(new Event("storage"))] : console.log('poo')]
             ).catch((error) => {
             console.log(error)
         }, [])
     }
     return (        
         <div>
+            {flash ? <div className="flash-messages">{flash}</div> : <div></div>}   
             <Row className='m-0 bg-dark '>
                 <Col className='h1 text-start' xs={8}><a className="text-decoration-none text-warning" href="/">StarWars API</a></Col>
                 <Col className='h6 text-end text-warning my-auto btn' xs={4} >
