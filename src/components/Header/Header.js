@@ -19,6 +19,9 @@ function Header(props) {
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+    const [RegisterShow, setRegisterShow] = useState(false);
+    const handleRegisterClose = () => setRegisterShow(false);
+    const handleRegisterShow = () => setRegisterShow(true);
 
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
@@ -88,6 +91,11 @@ function Header(props) {
         });
     }
 
+    const handleRegisterSubmit = (e) => {
+        e.preventDefault()
+
+    }
+
     // handle logout
     const handleLogout = (e) => {
         e.preventDefault()
@@ -102,9 +110,10 @@ function Header(props) {
         <div>
             {flash ? <div className={style}>{flash}</div> : <div></div>}  
             <Row className='m-0 bg-dark '>
-                <Col className='h1 text-start' xs={8}><a className="text-decoration-none text-warning" href="/">StarWars API</a></Col>
-                <Col className='h6 text-end text-warning my-auto btn' xs={4} >
-                {login ? <div onClick={handleLogout}>Logout</div> : <div onClick={handleShow}>Login</div>}
+                <Col className='h1 text-start' xs={7} md={10}><a className="text-decoration-none text-warning" href="/">StarWars API</a></Col>
+                <Col className='h6 text-end text-warning my-auto btn' xs={5} md={2}>
+                    {login ? <div className="d-inline p-2" onClick={handleLogout}>Logout</div> : <div className="d-inline p-2" onClick={handleShow}>Login</div>}
+                    <div className='d-inline' onClick={handleRegisterShow}>Register</div>
                 </Col>
             </Row>
             <Modal show={show} onHide={handleClose} className='login-modal'>
@@ -113,6 +122,34 @@ function Header(props) {
                 </Modal.Header>
                 <Modal.Body>
                 <Form onSubmit={handleLoginSubmit}>                    
+                    <InputGroup className="mb-3">
+                    <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faUser} /></InputGroup.Text>
+                    <Form.Control
+                    placeholder="Username or Email"
+                    aria-label="Username"
+                    username={username} onChange={handleUsernameChange} aria-describedby="basic-addon1" required/>
+                    </InputGroup>                    
+                    <InputGroup className="mb-3">
+                    <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faKey} /></InputGroup.Text>
+                    <Form.Control
+                    placeholder="Password"
+                    aria-label="Username"
+                    type="password"
+                    password={password} onChange={handlePasswordChange} aria-describedby="basic-addon1" required/>
+                    </InputGroup>
+                    <Button variant="dark" className="btn-sm" type="submit">
+                        Submit
+                    </Button>
+                </Form>
+                </Modal.Body>
+            </Modal>
+
+            <Modal show={RegisterShow} onHide={handleRegisterClose} className='register-modal'>
+                <Modal.Header className='border-0' closeButton>
+                    <Modal.Title>Register</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                <Form onSubmit={handleRegisterSubmit}>                    
                     <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faUser} /></InputGroup.Text>
                     <Form.Control
