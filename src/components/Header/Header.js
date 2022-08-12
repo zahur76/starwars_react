@@ -15,10 +15,6 @@ import { useEffect, useState } from "react"
 
 function Header(props) {
 
-    // flash messages
-    const [flash, flashMessages] = useState(null)
-
-
     // modal open close
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -30,11 +26,24 @@ function Header(props) {
    
 
     //handle all flask messages login/logout
-    const handleFlashMessages = (message) =>{
-        flashMessages(message)
-        setTimeout(() => {
-            flashMessages(null)
-        }, 3000);
+    const [flash, flashMessages] = useState(null)
+    const [style, flashStyle] = useState(null)
+
+    const handleFlashMessages = (message, error) =>{
+        if(error){
+            flashStyle('flash-messages text-danger')
+            flashMessages(message)
+            setTimeout(() => {
+                flashMessages(null)
+            }, 3000);
+
+        }else{
+            flashStyle('flash-messages')
+            flashMessages(message)
+            setTimeout(() => {
+                flashMessages(null)
+            }, 3000);
+        }        
     }
 
     const [accessToken, setAccessToken] = useState(null);
@@ -60,7 +69,7 @@ function Header(props) {
             if (!response.ok) {
                 // get error message from body or default to response statusText
                 setShow(false)
-                handleFlashMessages('Incorrect Username/password!')                
+                handleFlashMessages('Incorrect Username/password!', 'error')                
                 const error = (data && data.message) || response.statusText;
                 return Promise.reject(error);
             }
@@ -91,7 +100,7 @@ function Header(props) {
     }
     return (        
         <div>
-            {flash ? <div className="flash-messages">{flash}</div> : <div></div>}   
+            {flash ? <div className={style}>{flash}</div> : <div></div>}  
             <Row className='m-0 bg-dark '>
                 <Col className='h1 text-start' xs={8}><a className="text-decoration-none text-warning" href="/">StarWars API</a></Col>
                 <Col className='h6 text-end text-warning my-auto btn' xs={4} >

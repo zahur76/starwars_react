@@ -5,11 +5,35 @@ import Col from 'react-bootstrap/Col'
 
 
 function API(props) {
+
     const [data, setData] = useState(null);
     const [masterData, setMasterData] = useState(null);
     // console.log(process.env.NODE_ENV)
     const [login, setLogin] = useState(localStorage.getItem("login")); 
     // const [lang, setLang] = useState(null);
+
+
+    ///handle all flask messages login/logout
+    const [flash, flashMessages] = useState(null)
+    const [style, flashStyle] = useState(null)
+
+    const handleFlashMessages = (message, error) =>{
+        console.log(error)
+        if(error){
+            flashStyle('flash-messages text-danger')
+            flashMessages(message)
+            setTimeout(() => {
+                flashMessages(null)
+            }, 3000);
+
+        }else{
+            flashStyle('flash-messages')
+            flashMessages(message)
+            setTimeout(() => {
+                flashMessages(null)
+            }, 3000);
+        }        
+    }
 
     const debug = 'development'
     const [url] = useState(debug === 'development' ? 'http://127.0.0.1:8000/api/all_characters' : 'https://starwarsapi.hansolo.digital/api/all_characters')
@@ -23,7 +47,6 @@ function API(props) {
             .then((data) => [setData(data), setMasterData(data)]).catch((error) => {
                 console.log(error)
             });
-
         }else{
             fetch(url).then((res) => res.json())
             .then((data) => [setData(data.slice(0,4)), setMasterData(data)]).catch((error) => {
@@ -62,7 +85,7 @@ function API(props) {
         fetch(`http://127.0.0.1:8000/api/character_details/${characterId}`, {method: 'GET', headers: {
             Authorization: `Bearer ${accessToken}`
           }}).then((res) => res.json())
-          .then((data) => [data.detail ? console.log(data.detail): console.log(data)]).catch((error) => {
+          .then((data) => [data.detail ? handleFlashMessages('Denied Please Login!', 'error'): console.log(data)]).catch((error) => {
               console.log(error);
         }); 
     }
@@ -77,6 +100,7 @@ function API(props) {
         )   
     return (        
         <div>
+            {flash ? <div className={style}>{flash}</div> : <div></div>}
             <div className='text-center'>API REQUESTS</div>
             <Row className='m-0 text-center mt-4'>
                 {characterDetails}             
