@@ -26,6 +26,11 @@ function Header(props) {
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
     const [login, setLogin] = useState(localStorage.getItem("login") ? true : false);
+
+    const [RegUsername, setRegUsername] = useState(null);
+    const [RegEmail, setRegEmail] = useState(null);
+    const [RegPassword, setRegPassword] = useState(null);
+    const [RegPasswordConfirm, setRegPasswordConfirm] = useState(null);
    
 
     //handle all flask messages login/logout
@@ -51,16 +56,14 @@ function Header(props) {
 
     const [accessToken, setAccessToken] = useState(null);
 
-    // handle login form
+    // handle login
     const handleUsernameChange = (event) => {
         setUsername(event.target.value)
     }
 
     const handlePasswordChange = (event) => {
         setPassword(event.target.value)
-    }    
-
-    //handle login
+    }   
 
     const handleLoginSubmit = (e) => {
         e.preventDefault()
@@ -90,9 +93,32 @@ function Header(props) {
             console.log('Error login credentials')
         });
     }
+    
+    // handle registration
+    const handleRegistrationUsername= (event) => {
+        setRegUsername(event.target.value)
+    }
+
+    const handleRegistrationEmail = (event) => {
+        setRegEmail(event.target.value)
+    }
+
+    const handleRegistrationPassword = (event) => {
+        setRegPassword(event.target.value)
+    }
+
+    const handleRegistrationPasswordConfirm = (event) => {
+        setRegPasswordConfirm(event.target.value)
+    } 
 
     const handleRegisterSubmit = (e) => {
         e.preventDefault()
+        let data = { 'username': RegUsername,
+                     'email': RegEmail,
+                     'password': RegPassword,
+                     'password-confirm': RegPasswordConfirm}
+        
+        console.log(data)
 
     }
 
@@ -116,6 +142,7 @@ function Header(props) {
                     <div className='d-inline' onClick={handleRegisterShow}>Register</div>
                 </Col>
             </Row>
+            {/* Login Modal */}
             <Modal show={show} onHide={handleClose} className='login-modal'>
                 <Modal.Header className='border-0' closeButton>
                     <Modal.Title>Sign In</Modal.Title>
@@ -143,7 +170,7 @@ function Header(props) {
                 </Form>
                 </Modal.Body>
             </Modal>
-
+            {/* Registration Modal */}
             <Modal show={RegisterShow} onHide={handleRegisterClose} className='register-modal'>
                 <Modal.Header className='border-0' closeButton>
                     <Modal.Title>Register</Modal.Title>
@@ -153,17 +180,32 @@ function Header(props) {
                     <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faUser} /></InputGroup.Text>
                     <Form.Control
-                    placeholder="Username or Email"
+                    placeholder="Username"
                     aria-label="Username"
-                    username={username} onChange={handleUsernameChange} aria-describedby="basic-addon1" required/>
-                    </InputGroup>                    
+                    username={username} onChange={handleRegistrationUsername} aria-describedby="basic-addon1" required/>
+                    </InputGroup>
+                    <InputGroup className="mb-3">
+                    <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faUser} /></InputGroup.Text>
+                    <Form.Control
+                    placeholder="Email"
+                    aria-label="Username"
+                    username={username} onChange={handleRegistrationEmail} aria-describedby="basic-addon1" required/>
+                    </InputGroup>                  
                     <InputGroup className="mb-3">
                     <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faKey} /></InputGroup.Text>
                     <Form.Control
                     placeholder="Password"
                     aria-label="Username"
                     type="password"
-                    password={password} onChange={handlePasswordChange} aria-describedby="basic-addon1" required/>
+                    password={password} onChange={handleRegistrationPassword} aria-describedby="basic-addon1" required/>
+                    </InputGroup>
+                    <InputGroup className="mb-3">
+                    <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faKey} /></InputGroup.Text>
+                    <Form.Control
+                    placeholder="Confirm Password"
+                    aria-label="Username"
+                    type="password"
+                    password={password} onChange={handleRegistrationPasswordConfirm} aria-describedby="basic-addon1" required/>
                     </InputGroup>
                     <Button variant="dark" className="btn-sm" type="submit">
                         Submit
