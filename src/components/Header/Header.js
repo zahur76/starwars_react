@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faKey } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faKey, faMailReply} from '@fortawesome/free-solid-svg-icons'
 
 import { useEffect, useState } from "react"
 // import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
@@ -115,11 +115,31 @@ function Header(props) {
         e.preventDefault()
         let data = { 'username': RegUsername,
                      'email': RegEmail,
-                     'password': RegPassword,
-                     'password-confirm': RegPasswordConfirm}
+                     'password1': RegPassword,
+                     'password2': RegPasswordConfirm}
         
-        console.log(data)
-
+        fetch('http://127.0.0.1:8000/dj-rest-auth/registration/', {method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(data)}).then(async response => {
+            const data = await response.json();
+            // check for error response
+            if (!response.ok) {
+                // get error message from body or default to response statusText
+                console.log(data)
+                let errors = '';
+                for(var keys in data){
+                    var elements = data[keys];
+                    console.log(elements[0]);
+                    errors += elements[0]
+                }
+                setRegisterShow(false)
+                handleFlashMessages(errors, 'error') 
+            }else if(response.ok){
+                setRegisterShow(false)
+                handleFlashMessages(`Please Check email ${RegEmail} to confirm account`) 
+            }       
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
+        });
     }
 
     // handle logout
@@ -185,10 +205,11 @@ function Header(props) {
                     username={username} onChange={handleRegistrationUsername} aria-describedby="basic-addon1" required/>
                     </InputGroup>
                     <InputGroup className="mb-3">
-                    <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faUser} /></InputGroup.Text>
+                    <InputGroup.Text id="basic-addon1"><FontAwesomeIcon icon={faMailReply} /></InputGroup.Text>
                     <Form.Control
                     placeholder="Email"
                     aria-label="Username"
+                    type='email'
                     username={username} onChange={handleRegistrationEmail} aria-describedby="basic-addon1" required/>
                     </InputGroup>                  
                     <InputGroup className="mb-3">
