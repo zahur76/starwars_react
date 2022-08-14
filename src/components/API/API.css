@@ -9,6 +9,11 @@
     color:rgb(0, 0, 0);
 }
 
-.login-modal .modal-content {
+.character-modal .modal-content {
     background-color: rgb(255, 255, 255);
 }
+
+.image-container img {
+    width: 100%;
+}
+

@@ -99,7 +99,7 @@ function API(props) {
             }else if(response.ok){
                 setShow(true)
                 console.log(data)
-                setModaldetails(<Row className='text-center'>
+                setModaldetails(<Row className='text-center text-one'>
                                     <Col xs={12}><img src={data.image} alt={data.name} /></Col>
                                     <Col xs={12}>{data.name}</Col>
                                     <Col xs={12}>{data.gender}</Col>
@@ -113,9 +113,11 @@ function API(props) {
         }); 
     }
     const characterDetails = (data || []).map((element)=>                       
-            <Col className="text-light mb-2 text-dark btn" id={element.id} key={element.id} xs={12} sm={6} md={4} lg={3} onClick={handleCharacterDetails}>
-                <div className="image-container"><img src={element.image} alt={element.name} /></div>              
-                <div className="h6">{element.name}</div>                                      
+            <Col className="text-light mb-2 text-dark text-one p-0" xs={12} sm={6} md={4} lg={3} xl={2}>
+                <div className='border border-dark btn p-2 m-2' id={element.id} key={element.id} onClick={handleCharacterDetails}>
+                    <div className="image-container"><img src={element.image} alt={element.name} /></div>              
+                    <div className="h6 fw-bold">{element.name}</div>
+                </div>                                                      
             </Col>
         )    
 
@@ -127,9 +129,9 @@ function API(props) {
                 {characterDetails}             
             </Row>
 
-            <Modal show={show} onHide={handleClose} className='login-modal'>
+            <Modal show={show} onHide={handleClose} className='character-modal'>
                 <Modal.Header className='border-0' closeButton>
-                    <Modal.Title>Character Details</Modal.Title>
+                    <Modal.Title className='text-two'>Character Details</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     {modalDetails}
