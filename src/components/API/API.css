@@ -15,5 +15,15 @@
 
 .image-container img {
     width: 100%;
+    transition: all .3s ease-in-out;
+}
+
+.image-container {
+    overflow: hidden;
+}
+
+.character-card:hover {
+    opacity: 0.9;
+    border: 2px solid rgb(170, 170, 255) !important;
 }
 

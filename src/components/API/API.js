@@ -112,20 +112,35 @@ function API(props) {
             console.error('There was an error!', error);
         }); 
     }
+
+    const handleMouseOver = (event) => {
+        let imageId = event.currentTarget.id
+        let element = document.getElementsByClassName(imageId)
+        element[0].style.transform = 'scale(1.05)'
+    }
+
+    const handleMouseOut = (event) => {
+        const imageId = event.currentTarget.getAttribute("id")
+        let element = document.getElementsByClassName(imageId)
+        element[0].style.transform = 'scale(1.0)'
+        
+    }
+
+
     const characterDetails = (data || []).map((element)=>                       
-            <Col className="text-light mb-2 text-dark text-one p-0" xs={12} sm={6} md={4} lg={3} xl={2}>
-                <div className='border border-dark btn p-2 m-2' id={element.id} key={element.id} onClick={handleCharacterDetails}>
-                    <div className="image-container"><img src={element.image} alt={element.name} /></div>              
+            <Col className="text-light mb-2 text-dark text-one p-0" id={element.id} xs={12} sm={6} md={4} lg={3} xl={2}  onMouseOut={handleMouseOut} onMouseOver={handleMouseOver}>
+                <div className='border border-dark btn p-2 m-2 border-2 character-card' id={element.id} key={element.id} onClick={handleCharacterDetails}>
+                    <div className="image-container"><img className={element.id} src={element.image} alt={element.name} /></div>              
                     <div className="h6 fw-bold">{element.name}</div>
                 </div>                                                      
             </Col>
-        )    
-
+        )
+        
     return (        
         <div>
             {flash ? <div className={style}>{flash}</div> : <div></div>}
-            <div className='text-center'>API REQUESTS</div>
-            <Row className='m-0 text-center mt-4'>
+            {!login ? <div className='text-center p-2 text-two h4'>Sign In for More Characters!</div> : <div></div>}
+            <Row className='m-0 text-center mt-2'>
                 {characterDetails}             
             </Row>
 
