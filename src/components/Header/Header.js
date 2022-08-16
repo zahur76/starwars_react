@@ -11,7 +11,10 @@ import { faUser, faKey, faMailReply} from '@fortawesome/free-solid-svg-icons'
 
 import { useEffect, useState } from "react"
 // import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
+import { GoogleLogin } from 'react-google-login';
+import { gapi } from 'gapi-script';
 
+<pre>{process.env.REACT_APP_CLIENT_ID}</pre>
 
 function Header(props) {
 
@@ -152,6 +155,26 @@ function Header(props) {
             console.log(error)
         }, [])
     }
+
+    // google Social SignIn
+    useEffect(() => {
+        function start() {
+          gapi.client.init({
+            clientId: process.env.REACT_APP_CLIENT_ID,
+            scope: 'email',
+          });
+        }
+    
+        gapi.load('client:auth2', start);
+      }, [show]);
+
+    const onSuccess = (res) => {
+        console.log('success:', res.accessToken);
+    };
+    const onFailure = (err) => {
+        console.log('failed:', err);
+    };
+
     return (        
         <div>
             {flash ? <div className={style}>{flash}</div> : <div></div>}  
@@ -187,6 +210,16 @@ function Header(props) {
                     <Button variant="dark" className="btn-sm" type="submit">
                         Submit
                     </Button>
+                    <Col className='text-center' xs={12}>
+                    <GoogleLogin
+                        clientId={process.env.REACT_APP_CLIENT_ID}
+                        buttonText="Sign in with Google"
+                        onSuccess={onSuccess}
+                        onFailure={onFailure}
+                        cookiePolicy={'single_host_origin'}
+                        isSignedIn={true}
+                    />
+                    </Col>
                 </Form>
                 </Modal.Body>
             </Modal>
