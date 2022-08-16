@@ -1,17 +1,6 @@
 import './Sign_in.css'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faKey, faMailReply} from '@fortawesome/free-solid-svg-icons'
-
-import { useEffect, useState } from "react"
-// import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
-
 
 function SignIn(props) {
 
