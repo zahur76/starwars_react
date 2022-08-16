@@ -14,7 +14,6 @@ import { useEffect, useState } from "react"
 import { GoogleLogin } from 'react-google-login';
 import { gapi } from 'gapi-script';
 
-<pre>{process.env.REACT_APP_CLIENT_ID}</pre>
 
 function Header(props) {
 
@@ -25,6 +24,7 @@ function Header(props) {
     const [RegisterShow, setRegisterShow] = useState(false);
     const handleRegisterClose = () => setRegisterShow(false);
     const handleRegisterShow = () => setRegisterShow(true);
+    const [googleActive, setGoogleActive] = useState(false);
 
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
@@ -157,23 +157,56 @@ function Header(props) {
     }
 
     // google Social SignIn
-    useEffect(() => {
+    useEffect(() => {        
         function start() {
-          gapi.client.init({
-            clientId: process.env.REACT_APP_CLIENT_ID,
-            scope: 'email',
-          });
-        }
-    
+            gapi.client.init({
+                clientId: process.env.REACT_APP_CLIENT_ID,
+                scope: 'email',
+            });
+            }    
         gapi.load('client:auth2', start);
-      }, [show]);
+        }, [show]);
+        
+    const onSuccess = (res) => {        
+        if(googleActive){
+            let googleToken = {"access_token": res.accessToken};
+            fetch('http://127.0.0.1:8000/social_login/google/', {method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(googleToken)}).then(async response => {
+            const data = await response.json();
 
-    const onSuccess = (res) => {
-        console.log('success:', res.accessToken);
+            // check for error response
+            if (!response.ok) {
+                // get error message from body or default to response statusText
+                setShow(false)
+                handleFlashMessages('Incorrect Username/password!', 'error')                
+                const error = (data && data.message) || response.statusText;
+                return Promise.reject(error);
+            }
+        
+        setAccessToken(data['access_token'])
+        localStorage.setItem('token', data['access_token'])     
+        setLogin(true) // update state to change element
+        localStorage.setItem("login", 'true')
+        setShow(false)
+        window.dispatchEvent(new Event("storage"));
+        handleFlashMessages('Login Successful!')
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
+            console.log('Error login credentials')
+        });
+        }        
     };
     const onFailure = (err) => {
         console.log('failed:', err);
     };
+
+    const handleMouseOver = (event) => {
+        setGoogleActive(true)
+    }
+
+    const handleMouseOut = (event) => {
+        setGoogleActive(false)
+    }
 
     return (        
         <div>
@@ -211,14 +244,16 @@ function Header(props) {
                         Submit
                     </Button>
                     <Col className='text-center' xs={12}>
+                    <div onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>                    
                     <GoogleLogin
                         clientId={process.env.REACT_APP_CLIENT_ID}
                         buttonText="Sign in with Google"
                         onSuccess={onSuccess}
-                        onFailure={onFailure}
+                        onFailure={onFailure}                        
                         cookiePolicy={'single_host_origin'}
                         isSignedIn={true}
                     />
+                    </div>
                     </Col>
                 </Form>
                 </Modal.Body>
