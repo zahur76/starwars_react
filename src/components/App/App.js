@@ -7,6 +7,7 @@ import {
   Routes,
   Route
 } from "react-router-dom";
+import SignIn from '../SIGN-IN/Sign_in';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <BrowserRouter>
         <Routes className="App">
             <Route path="/" element={<div><Header /><API /></div>} />
+            <Route path="/sign-in" element={<div><SignIn /></div>} />
         </Routes>
       </BrowserRouter>
     </div>
