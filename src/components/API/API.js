@@ -100,7 +100,7 @@ function API(props) {
                 setShow(true)
                 console.log(data)
                 setModaldetails(<Row className='text-center text-one'>
-                                    <Col xs={12}><img src={data.image} alt={data.name} /></Col>
+                                    <Col xs={12} className="modal-image"><img src={data.image} alt={data.name} /></Col>
                                     <Col xs={12}>{data.name}</Col>
                                     <Col xs={12}>{data.gender}</Col>
                                     <Col xs={12}><span className='fw-bold'>Birth Year:</span> {data.birth_year}</Col>

@@ -28,3 +28,8 @@
     border: 2px solid rgb(170, 170, 255) !important;
 }
 
+.modal-image img {
+    width: 75%;
+    margin: 0 auto;
+}
+
