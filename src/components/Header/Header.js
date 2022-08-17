@@ -71,7 +71,7 @@ function Header(props) {
     const handleLoginSubmit = (e) => {
         e.preventDefault()
         let data = {'username': username, 'password': password}
-        fetch('http://127.0.0.1:8000/dj-rest-auth/login/', {method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(data)}).then(async response => {
+        fetch('https://starwarsapi.hansolo.digital/dj-rest-auth/login/', {method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(data)}).then(async response => {
             const data = await response.json();
 
             // check for error response
@@ -121,7 +121,7 @@ function Header(props) {
                      'password1': RegPassword,
                      'password2': RegPasswordConfirm}
         
-        fetch('http://127.0.0.1:8000/dj-rest-auth/registration/', {method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(data)}).then(async response => {
+        fetch('https://starwarsapi.hansolo.digital/dj-rest-auth/registration/', {method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(data)}).then(async response => {
             const data = await response.json();
             // check for error response
             if (!response.ok) {
@@ -148,7 +148,7 @@ function Header(props) {
     // handle logout
     const handleLogout = (e) => {
         e.preventDefault()
-        fetch('http://127.0.0.1:8000/dj-rest-auth/logout/', {method: 'POST', headers: {
+        fetch('https://starwarsapi.hansolo.digital/dj-rest-auth/logout/', {method: 'POST', headers: {
             Authorization: accessToken
           }}).then((res) => [res.status===200 ? [handleFlashMessages('Logout Successful!'), localStorage.removeItem('login'), localStorage.removeItem('token'), setLogin(null), window.dispatchEvent(new Event("storage"))] : console.log('poo')]
             ).catch((error) => {
@@ -170,7 +170,8 @@ function Header(props) {
     const onSuccess = (res) => {        
         if(googleActive){
             let googleToken = {"access_token": res.accessToken};
-            fetch('http://127.0.0.1:8000/social_login/google/', {method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(googleToken)}).then(async response => {
+            console.log(googleActive)
+            fetch('https://starwarsapi.hansolo.digital/social_login/google/', {method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(googleToken)}).then(async response => {
             const data = await response.json();
 
             // check for error response
@@ -240,9 +241,11 @@ function Header(props) {
                     type="password"
                     password={password} onChange={handlePasswordChange} aria-describedby="basic-addon1" required/>
                     </InputGroup>
-                    <Button variant="dark" className="btn-sm" type="submit">
-                        Submit
-                    </Button>
+                    <Col className='text-center m-2' xs={12}>
+                        <Button className="btn-sm btn-light submit-button" type="submit">
+                            Submit
+                        </Button>
+                    </Col>
                     <Col className='text-center' xs={12}>
                     <div onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>                    
                     <GoogleLogin
@@ -302,9 +305,7 @@ function Header(props) {
                 </Form>
                 </Modal.Body>
             </Modal>
-        </div>
-
-        
+        </div>        
     );
 }
 

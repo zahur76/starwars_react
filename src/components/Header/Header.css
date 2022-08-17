@@ -12,7 +12,7 @@
 }
 
 .modal-content {
-    background-color: rgb(80, 118, 255);
+    background-color: rgba(80, 118, 255, 0.927);
 }
 
 /* flash messages */
@@ -24,4 +24,13 @@
     background-color:rgb(255, 255, 255);
     border: 1px solid black;
     color:rgb(0, 0, 0);
+}
+
+.submit-button {
+    background-color:#fff;
+    color: #9a9a9a;
+}
+
+.submit-button:hover {
+    background-color:rgb(219, 228, 253);
 }

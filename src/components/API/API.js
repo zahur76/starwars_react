@@ -42,20 +42,20 @@ function API(props) {
         }        
     }
 
-    const debug = 'development'
-    const [url] = useState(debug === 'development' ? 'http://127.0.0.1:8000/api/all_characters' : 'https://starwarsapi.hansolo.digital/api/all_characters')
+    // const debug = 'development'
+    // const [url] = useState(debug === 'development' ? 'http://127.0.0.1:8000/api/all_characters' : 'https://starwarsapi.hansolo.digital/api/all_characters')
     // https://starwarsapi.hansolo.digital/api/all_characters
 
 
     // render character depending on login status
     useEffect(() => {
         if(login){
-            fetch(url).then((res) => res.json())
+            fetch('https://starwarsapi.hansolo.digital/api/all_characters').then((res) => res.json())
             .then((data) => [setData(data), setMasterData(data)]).catch((error) => {
                 console.log(error)
             });
         }else{
-            fetch(url).then((res) => res.json())
+            fetch('https://starwarsapi.hansolo.digital/api/all_characters').then((res) => res.json())
             .then((data) => [setData(data.slice(0,4)), setMasterData(data)]).catch((error) => {
                 console.log(error)
             });
@@ -89,7 +89,7 @@ function API(props) {
         event.preventDefault()
         const characterId = event.currentTarget.id
         const accessToken = localStorage.getItem('token')
-        fetch(`http://127.0.0.1:8000/api/character_details/${characterId}`, {method: 'GET', headers: {Authorization: `Bearer ${accessToken}`
+        fetch(`https://starwarsapi.hansolo.digital/api/character_details/${characterId}`, {method: 'GET', headers: {Authorization: `Bearer ${accessToken}`
           }}).then(async response => {
             const data = await response.json();
             // check for error response
