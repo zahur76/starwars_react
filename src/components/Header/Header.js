@@ -213,7 +213,7 @@ function Header(props) {
         <div>
             {flash ? <div className={style}>{flash}</div> : <div></div>}  
             <Row className='m-0 bg-dark '>
-                <Col className='h1 text-start' xs={7} md={10}><a className="text-decoration-none text-warning" href="/">StarWars API</a></Col>
+                <Col className='h1 text-start main-logo my-auto p-2' xs={7} md={10}><a className="text-decoration-none text-warning" href="/">StarWars API <i class="fa-solid fa-jedi"></i></a></Col>
                 <Col className='h6 text-end text-warning my-auto btn' xs={5} md={2}>
                     {login ? <div className="d-inline p-2" onClick={handleLogout}>Logout</div> : <div className="d-inline p-2" onClick={handleShow}>Login</div>}
                     {!login ? <div className='d-inline' onClick={handleRegisterShow}>Register</div> : <div></div>}

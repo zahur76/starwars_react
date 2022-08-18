@@ -5,6 +5,8 @@ import Col from 'react-bootstrap/Col'
 
 import Modal from 'react-bootstrap/Modal';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 
 function API(props) {
 
@@ -78,7 +80,7 @@ function API(props) {
             
     // add faction to description
     const faction = (faction) => {
-        if(faction===1){
+        if(faction!==1){
             return 'Rebel Alliance'
         }else{
             return 'Galactic Empire'
@@ -126,12 +128,11 @@ function API(props) {
         
     }
 
-
     const characterDetails = (data || []).map((element)=>                       
-            <Col className="text-light mb-2 text-dark text-one p-0" id={element.id} xs={12} sm={6} md={4} lg={3} xl={2}  onMouseOut={handleMouseOut} onMouseOver={handleMouseOver}>
+            <Col className="text-light mb-2 text-dark text-one p-0" id={element.id} xs={6} sm={6} md={4} lg={3} xl={2}  onMouseOut={handleMouseOut} onMouseOver={handleMouseOver}>
                 <div className='border border-dark btn p-2 m-2 border-2 character-card' id={element.id} key={element.id} onClick={handleCharacterDetails}>
-                    <div className="image-container"><img className={element.id} src={element.image} alt={element.name} /></div>              
-                    <div className="h6 fw-bold">{element.name}</div>
+                    <div className="image-container"><div className='faction-logo'>{element.faction===1 ? <i class="fa-brands fa-galactic-republic h2 text-danger"></i>: <i class="fa-brands fa-rebel h2 text-primary"></i>}</div><img className={element.id} src={element.image} alt={element.name} /></div>              
+                    <div className="h6 fw-bold mt-3"><i class="fa-brands fa-galactic-senate"></i> {element.name}</div>
                 </div>                                                      
             </Col>
         )
@@ -144,7 +145,7 @@ function API(props) {
                 {characterDetails}             
             </Row>
 
-            <Modal show={show} onHide={handleClose} className='character-modal'>
+            <Modal show={show} onHide={handleClose} className='character-modal border border-5 border-dark'>
                 <Modal.Header className='border-0' closeButton>
                     <Modal.Title className='text-two'>Character Details</Modal.Title>
                 </Modal.Header>
