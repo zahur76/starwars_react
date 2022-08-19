@@ -170,7 +170,6 @@ function Header(props) {
     const onSuccess = (res) => {        
         if(googleActive){
             let googleToken = {"access_token": res.accessToken};
-            console.log(googleActive)
             fetch('https://starwarsapi.hansolo.digital/social_login/google/', {method: 'POST', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, body: JSON.stringify(googleToken)}).then(async response => {
             const data = await response.json();
 
@@ -201,6 +200,8 @@ function Header(props) {
         console.log('failed:', err);
     };
 
+
+    // set googleActive on onMouseOver/Out
     const handleMouseOver = (event) => {
         setGoogleActive(true)
     }
@@ -212,11 +213,11 @@ function Header(props) {
     return (        
         <div>
             {flash ? <div className={style}>{flash}</div> : <div></div>}  
-            <Row className='m-0 bg-dark '>
+            <Row className='m-0 bg-dark'>
                 <Col className='h1 text-start main-logo my-auto p-2' xs={7} md={10}><a className="text-decoration-none text-warning" href="/">StarWars API <i class="fa-solid fa-jedi"></i></a></Col>
-                <Col className='h6 text-end text-warning my-auto btn' xs={5} md={2}>
-                    {login ? <div className="d-inline p-2" onClick={handleLogout}>Logout</div> : <div className="d-inline p-2" onClick={handleShow}>Login</div>}
-                    {!login ? <div className='d-inline' onClick={handleRegisterShow}>Register</div> : <div></div>}
+                <Col className='h6 text-end text-warning my-auto' xs={5} md={2}>
+                    {login ? <div className="d-inline p-2 btn text-warning" onClick={handleLogout}>Logout</div> : <div className="d-inline p-2 btn text-warning" onClick={handleShow}>Login</div>}
+                    {!login ? <div className='d-inline btn text-warning' onClick={handleRegisterShow}>Register</div> : <div></div>}
                 </Col>
             </Row>
             {/* Login Modal */}

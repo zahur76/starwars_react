@@ -35,6 +35,10 @@
     background-color:rgb(219, 228, 253);
 }
 
+.main-logo:hover {
+    opacity: 0.9;
+}
+
 @media screen and (max-width: 576px){
     .main-logo {
         font-size: 20px!important;

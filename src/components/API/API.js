@@ -5,8 +5,6 @@ import Col from 'react-bootstrap/Col'
 
 import Modal from 'react-bootstrap/Modal';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
 
 function API(props) {
 

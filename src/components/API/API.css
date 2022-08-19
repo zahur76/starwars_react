@@ -26,6 +26,7 @@
 .character-card:hover {
     opacity: 0.9;
     border: 2px solid rgb(170, 170, 255) !important;
+    background-color: rgb(251, 219, 255);
 }
 
 .modal-image img {
