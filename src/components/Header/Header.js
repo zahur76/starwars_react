@@ -217,7 +217,7 @@ function Header(props) {
                 <Col className='h1 text-start main-logo my-auto p-2' xs={7} md={10}><a className="text-decoration-none text-warning" href="/">StarWars API <i class="fa-solid fa-jedi"></i></a></Col>
                 <Col className='h6 text-end text-warning my-auto' xs={5} md={2}>
                     {login ? <div className="d-inline p-2 btn text-warning" onClick={handleLogout}>Logout</div> : <div className="d-inline p-2 btn text-warning" onClick={handleShow}>Login</div>}
-                    {!login ? <div className='d-inline btn text-warning' onClick={handleRegisterShow}>Register</div> : <div></div>}
+                    {!login ? <div className='d-inline btn text-warning p-0' onClick={handleRegisterShow}>Register</div> : <div></div>}
                 </Col>
             </Row>
             {/* Login Modal */}
