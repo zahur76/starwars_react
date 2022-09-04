@@ -55,10 +55,24 @@ function API(props) {
                 console.log(error)
             });
         }else{
-            fetch('https://starwarsapi.hansolo.digital/api/all_characters').then((res) => res.json())
-            .then((data) => [setData(data.slice(0,4)), setMasterData(data)]).catch((error) => {
-                console.log(error)
-            });
+            // fetch('https://starwarsapi.hansolo.digital/api/all_characters').then((res) => res.json())
+            // .then((data) => [setData(data.slice(0,4)), setMasterData(data)]).catch((error) => {
+            //     console.log(error)
+            // });
+            async function fetchCharacters() {
+                const response = await fetch('https://starwarsapi.hansolo.digital/api/all_characters');
+                if (!response.ok) {
+                  const message = `An error has occured: ${response.status}`;
+                  throw new Error(message);
+                }
+                const characters = await response.json();
+                setData(characters.splice(0,4));
+                setMasterData(characters);
+                return characters;
+              }
+              fetchCharacters().catch(error => {
+                console.log(error.message); // 'An error has occurred: 404'
+              });
         }
         
     // eslint-disable-next-line react-hooks/exhaustive-deps
